@@ -20,7 +20,9 @@ class PlayList {
     }
     
     /** Returns the current number of tracks in this play list. */ 
-    public int getSize() {
+    public int getSize() 
+    {
+        //Try
         return size;
     }
 
@@ -146,16 +148,38 @@ class PlayList {
     }
 
     /** Removes the first track from this list. If the list is empty, does nothing. */
-    public void removeFirst() {
-        //// replace this comment with your code
+    public void removeFirst() 
+    {
+        if (size == 0)
+        { // If the list is empty
+            return;
+        } 
+        else
+        {
+            remove(0); // removes the first track    
+        }
     }
     
     /** Adds all the tracks in the other list to the end of this list. 
      *  If the total size of both lists is too large, does nothing. */
     //// An elegant and terribly inefficient implementation.
-     public void add(PlayList other) {
-        //// replace this comment with your code
-    }
+     public void add(PlayList other) 
+     {
+        int NewSize = size + other.size; //the size of the new list
+
+        if (NewSize <= maxSize)
+        { 
+            for (int j = 0; j < other.size; j++)
+            {
+                add(other.tracks[j]);
+                size = NewSize;
+            }
+        }
+        else
+        {
+            return ;
+        }
+     }
 
     /** Returns the index in this list of the track that has the shortest duration,
      *  starting the search in location start. For example, if the durations are 
@@ -163,9 +187,21 @@ class PlayList {
      *  minimum value (5) when starting the search from index 2.  
      *  If start is negative or greater than size - 1, returns -1.
      */
-    private int minIndex(int start) {
-        //// replace the following statement with your code
-        return 0;
+    private int minIndex(int start) 
+    {
+        if (start < 0 || start >= size)
+        {
+        return -1;
+        }
+        int Minimal_Index = start; //Initializing the minimal index
+        for (int i = start + 1; i < size; i++) 
+        {
+            if (tracks[i].getDuration() < tracks[Minimal_Index].getDuration()) //Looking for the lowest value from the given index
+            {
+                Minimal_Index = i;
+            }
+        }
+        return Minimal_Index;
     }
 
     /** Returns the title of the shortest track in this list. 
@@ -178,9 +214,14 @@ class PlayList {
      *  durations will appear first. The sort is done in-place. In other words,
      *  rather than returning a new, sorted playlist, the method sorts
      *  the list on which it was called (this list). */
-    public void sortedInPlace() {
-        // Uses the selection sort algorithm,  
-        // calling the minIndex method in each iteration.
-        //// replace this statement with your code
+    public void sortedInPlace() 
+    {
+        for (int i = 0; i < size - 1; i++) 
+        {
+            int Minimal_index = minIndex(i); //looking fot the minimal value from i
+            Track temp = tracks[i]; // we define temp track which represents the mimimal duration track from i
+            tracks[i] = tracks[Minimal_index]; //we change the i location with the minimal duration track
+            tracks[Minimal_index] = temp; //We change the tracks because we dont want to delete this track
+        }
     }
 }
